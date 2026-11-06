@@ -29,11 +29,6 @@
   
 <select id="department">
   <option value="">Select Department</option>
-  <option>Mathematics</option>
-  <option>Physics</option>
-  <option>Chemistry</option>
-  <option>Botany</option>
-  <option>Zoology</option>
 </select>
   <select id="semester">
     <option value="">Select Semester</option>
@@ -62,7 +57,24 @@ const department = document.getElementById("department");
 const semester = document.getElementById("semester");
 const year = document.getElementById("year");
 const search = document.getElementById("search");
+    
+const departments = {
+  BSc: ["Mathematics", "Physics", "Chemistry", "Botany", "Zoology"],
+  BA: ["History", "Political Science", "English", "Economics"],
+  BCom: ["Accountancy", "Management", "Finance", "Business Studies"]
+};
 
+stream.addEventListener("change", function() {
+  department.innerHTML = '<option value="">Select Department</option>';
+
+  const list = departments[stream.value] || [];
+
+  list.forEach(name => {
+    department.innerHTML += `<option value="${name}">${name}</option>`;
+  });
+
+  showPapers();
+});
 const papers = [
   {
     stream: "BSc",
