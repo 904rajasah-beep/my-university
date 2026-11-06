@@ -20,46 +20,93 @@
   <h2>Previous Year Question Papers</h2>
   <p>Rabindranath Tagore University</p>
 
-  <select>
-    <option>Select Stream</option>
-    <option>Science</option>
-    <option>Arts</option>
-    <option>Commerce</option>
-  </select>
-
-  <select>
-    <option>Select Semester</option>
+  <select id="stream">
+    <option value="">Select Stream</option>
+    <option value="BSc">BSc (Science)</option>
+    <option value="BA">BA (Arts)</option>
+    <option value="BCom">BCom (Commerce)</option>
+</select>
+  
+<select id="department">
+  <option value="">Select Department</option>
+  <option>Mathematics</option>
+  <option>Physics</option>
+  <option>Chemistry</option>
+  <option>Botany</option>
+  <option>Zoology</option>
+</select>
+  <select id="semester">
+    <option value="">Select Semester</option>
     <option>Semester 1</option>
     <option>Semester 2</option>
     <option>Semester 3</option>
     <option>Semester 4</option>
     <option>Semester 5</option>
+    <option>Semester 6</option>
 <option>Semester 7</option>
 <option>Semester 8</option>
   </select>
-
-  <select>
-    <option>Select Year</option>
+<select id="year">
+    <option value="">Select Year</option>
     <option>2026</option>
     <option>2025</option>
     <option>2024</option>
     <option>2023</option>
   </select>
 
-  <input type="text" placeholder="Search subject...">
+<input type="text" id="search" placeholder="Search subject...">
+  <div id="paperList"></div>
+  <script>
+const stream = document.getElementById("stream");
+const department = document.getElementById("department");
+const semester = document.getElementById("semester");
+const year = document.getElementById("year");
+const search = document.getElementById("search");
 
-  <div class="card">
-    <h3>Question Papers</h3>
-    <h3>Mathematics – Major 3.1</h3>
-<p>Semester: 3rd Semester</p>
+const papers = [
+  {
+    stream: "BSc",
+    department: "Mathematics",
+    semester: "Semester 3",
+    year: "2024",
+    subject: "Major 3.1",
+    file: "3.1(24).pdf"
+  }
+];
 
-<a href="3.1(24).pdf" target="_blank">
-  <button>View PDF</button>
-</a>
+function showPapers() {
+  const result = papers.filter(p =>
+    (!stream.value || p.stream === stream.value) &&
+    (!department.value || p.department === department.value) &&
+    (!semester.value || p.semester === semester.value) &&
+    (!year.value || p.year === year.value) &&
+    (!search.value || p.subject.toLowerCase().includes(search.value.toLowerCase()))
+  );
 
-<a href="3.1(24).pdf" download>
-  <button>Download PDF</button>
-</a>
-  </div>
+  const card = document.getElementById("paperList");
+  card.innerHTML = "";
+
+  result.forEach(p => {
+    card.innerHTML += `
+      <div class="card">
+        <h3>${p.department} – ${p.subject}</h3>
+        <p>${p.semester} | ${p.year}</p>
+        <a href="${p.file}" target="_blank">View PDF</a>
+        <a href="${p.file}" download>Download PDF</a>
+      </div>`;
+  });
+
+  if (!result.length) {
+    card.innerHTML = "<p>No papers found.</p>";
+  }
+}
+
+[stream, department, semester, year, search].forEach(el => {
+  el.addEventListener("change", showPapers);
+  el.addEventListener("input", showPapers);
+});
+
+showPapers();
+</script>
 </body>
 </html>
